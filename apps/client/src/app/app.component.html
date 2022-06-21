@@ -1,0 +1,44 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+
+
+
+
+<section>
+    <div class="card">
+        <div class="c1">
+
+        </div>
+        <div class="c2">
+            <div class="title">
+                <p>W11k</p>
+            </div>
+            <div class="firm">
+                <p>Angular Web-Development</p>
+            </div>
+            <div class="name">
+                <p>{{userinfo?.prename}} {{userinfo?.name}}</p>
+            </div>
+            <div class="pos">
+                <p>{{userinfo?.state}}</p>
+            </div>
+            <div class="row">
+                <p><mat-icon> phone</mat-icon>{{userinfo?.phone}}</p>
+                <p><mat-icon>bookmark</mat-icon>{{userinfo?.email}}</p>
+                <p><mat-icon> place</mat-icon>{{userinfo?.city}} - {{userinfo?.count}}</p>
+                <div class="cv">
+                    <select name="Lebenslauf" id="vc">
+                        <option name="cv">Lebenslauf</option>
+                        <option value="{Preschool">{{userinfo?.pre}} {{userinfo?.pretime}}</option>
+                        <option value="high">{{userinfo?.high}} {{userinfo?.hightime}}</option>
+                        <option value="abs">{{userinfo?.abs}}</option>
+                        <option value="sonstiges">{{userinfo?.sonstiges}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
