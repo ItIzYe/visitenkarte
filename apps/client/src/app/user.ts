@@ -3,13 +3,15 @@ export interface User {
     prename: string;
     phone: string;
     email: string;
-    state: string;
     city: string;
-    count: string;
+    state: string;
     pre: string;
     high: string;
-    pretime: string;
-    hightime: string;
+    preTime: string;
+    highTime: string;
     abs: string;
-    sonstiges: string;
+    ql1: string;
+    ql2: string;
+    ql3: string;
+    pos: string
 }

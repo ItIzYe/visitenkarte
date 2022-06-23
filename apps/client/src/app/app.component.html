@@ -1,8 +1,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 
-
-
+<form-comp (callParent)='getMsgFromChild({$event : $event})'></form-comp>
 
 <section>
     <div class="card">
@@ -17,28 +16,28 @@
                 <p>Angular Web-Development</p>
             </div>
             <div class="name">
-                <p>{{userinfo?.prename}} {{userinfo?.name}}</p>
+                <p>{{msg?.prename}} {{msg?.name}}</p>
             </div>
             <div class="pos">
-                <p>{{userinfo?.state}}</p>
+                <p>{{msg?.pos}}</p>
             </div>
             <div class="row">
-                <p><mat-icon> phone</mat-icon>{{userinfo?.phone}}</p>
-                <p><mat-icon>bookmark</mat-icon>{{userinfo?.email}}</p>
-                <p><mat-icon> place</mat-icon>{{userinfo?.city}} - {{userinfo?.count}}</p>
+                <p><mat-icon> phone</mat-icon> {{msg?.phone}}</p>
+                <p><mat-icon>bookmark</mat-icon> {{msg?.email}}</p>
+                <p><mat-icon> place</mat-icon> {{msg?.city}} - {{msg?.state}}</p>
                 <div class="cv">
                     <select name="Lebenslauf" id="vc">
                         <option name="cv">Lebenslauf</option>
-                        <option value="{Preschool">{{userinfo?.pre}} {{userinfo?.pretime}}</option>
-                        <option value="high">{{userinfo?.high}} {{userinfo?.hightime}}</option>
-                        <option value="abs">{{userinfo?.abs}}</option>
-                        <option value="sonstiges">{{userinfo?.sonstiges}}</option>
+                        <option value="Preschool">{{msg?.pre}} {{msg?.preTime}}</option>
+                        <option value="high">{{msg?.high}} {{msg?.highTime}}</option>
+                        <option value="abs">{{msg?.abs}}</option>
+                        <option value="sonstiges">{{msg?.ql1}}</option>
+                        <option value="sonstiges2">{{msg?.ql2}}</option>
+                        <option value="sonstiges2">{{msg?.ql3}}</option>
                     </select>
                 </div>
             </div>
-
         </div>
 
     </div>
-
 </section>
