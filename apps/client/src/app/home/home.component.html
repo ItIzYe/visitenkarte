@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+
+<section>
+    <div class="p-3">
+        <label for="name">Nachname</label>
+        <input id="name" [(ngModel)]="userInfo.name" type="text" class="form-control" placeholder="Ade">
+    </div>
+    <div class="p-3">
+        <label for="prename">Vorname</label>
+        <input type="text" [(ngModel)]="userInfo.prename" id="prename" class="form-control" placeholder="Ruben">
+    </div>
+    <div class="p-3">
+        <label for="phone">Nummer</label>
+        <input type="text" [(ngModel)]="userInfo.phone"  id="phone" class="form-control" placeholder="017647283268">
+    </div>
+    <div class="p-3">
+        <label for="email">Emailadresse</label>
+        <input type="text" [(ngModel)]="userInfo.email"  id="email" class="form-control" placeholder="ItIzYe@drippy.studio">
+    </div>
+    <div class="p-3">
+        <label for="city">Wohnort</label>
+        <input type="text" [(ngModel)]="userInfo.city" id="city" class="form-control" placeholder="Singen">
+    </div>
+    <div class="p-3">
+        <label for="state">Bundesland</label>
+        <input type="text" [(ngModel)]="userInfo.state" name="state" id="state" class="form-control" placeholder="BW">
+    </div>
+    <div class="p-3">
+        <label for="ql1">Qualifikation 1</label>
+        <input type="text" [(ngModel)]="userInfo.ql1" id="ql1" class="form-control" placeholder="Streitschlichter">
+    </div>
+    <div class="p-3">
+        <label for="ql2">Qualifikation 2</label>
+        <input type="text" [(ngModel)]="userInfo.ql2" id="ql2" class="form-control" placeholder="Praktikum">
+    </div>
+    <div class="p-3">
+        <label for="ql3">Qualifikation 3</label>
+        <input type="text" [(ngModel)]="userInfo.ql3" id="ql3" class="form-control" placeholder="FSJ">
+    </div>
+    <div class="p-3">
+        <label for="pre">Grundschule</label>
+        <input type="text" [(ngModel)]="userInfo.pre"  id="pre" class="form-control" placeholder="Waldeckschule">
+    </div>
+    <div class="p-3">
+        <label for="pretime">Dauer</label>
+        <input type="text" [(ngModel)]="userInfo.preTime" id="pretime" class="form-control" placeholder="2012-2016">
+    </div>
+    <div class="p-3">
+        <label for="high">Mittelschule</label>
+        <input type="text" [(ngModel)]="userInfo.high" id="high" class="form-control" placeholder="Hegau-Gymnasium">
+    </div>
+    <div class="p-3">
+        <label for="hightime">Dauer</label>
+        <input type="text" [(ngModel)]="userInfo.highTime" id="hightime" class="form-control" placeholder="2016-2022">
+    </div>
+    <div class="p-3">
+        <label for="abs">Abschluss</label>
+        <input type="text" [(ngModel)]="userInfo.abs" id="abs" class="form-control" placeholder="-">
+    </div>
+    <div class="p-3">
+        <label for="pos">Position</label>
+        <input type="text" [(ngModel)]="userInfo.pos" id="pos" class="form-control" placeholder="Praktikant">
+    </div>
+
+    <button mat-button color="primary" class="btn" (click)="msgToParent(); print()">Submit</button>
+</section>
