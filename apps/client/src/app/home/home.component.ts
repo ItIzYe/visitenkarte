@@ -1,8 +1,5 @@
 import { Component, Injectable, Input, Output, EventEmitter, OnInit } from '@angular/core';
-//import { VERSION } from '../environments/version';
 import { User} from '../user';
-import { Subject} from 'rxjs';
-import { UserService} from '../user.service';
 
 @Component({
     selector: 'form-comp',

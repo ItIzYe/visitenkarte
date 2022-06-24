@@ -1,10 +1,23 @@
+
+html {
+    background: #3A5BA0;
+}
+
+body {
+    background: black;
+}
+
 section {
     width: 400px;
+    height: 500px;
 
     margin-left: 40%;
-    margin-bottom: 300px;
+    margin-bottom: 10px;
 
+    color: #DFF6FF;
     font-family: 'Poppins', serif;
+    padding-bottom: 3px;
+
 }
 
 .form-group {
@@ -16,8 +29,12 @@ section {
     font-family: 'Poppins', serif;
 
     padding-bottom: 1rem;
+
+    background: #1363DF;
+    backdrop-filter: blur(100px);
 }
 .btn {
 
-    margin-left: 140px;
+    color: #DFF6FF;
+    margin-left: 150px;
 }

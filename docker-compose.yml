@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+    db:
+        image: postgres
+        restart: "no"
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: w11k
+            POSTGRES_DATABASE: w11k
+            POSTGRES_PASSWORD: w11k
+        volumes:
+            - ./dev/db/:/docker-entrypoint-initdb.d/ # execute those sql files in alphanumerical order on first start
+
+    client:
+        depends_on:
+            - backend
+        image: registry.gitlab.com/w11k-devs/intern/w11k-angular-nest-starter/client:latest
+#       build: frontend/.
+        ports:
+            - 80:80
+
+
+
+    backend:
+        depends_on:
+            - db
+        image: registry.gitlab.com/w11k-devs/intern/w11k-angular-nest-starter/backend:latest
+#        build: backend/.
+        ports:
+            - 3000:3000
+        privileged: true
+        environment:
+            NODE_ENV: production
+            DB_HOST: "db"
+            DB_PORT: "5432"
+            DB_USER: w11k
+            DB_PW: w11k
+            DB_NAME: w11k
+#           TODO: integrate typeorm
+#           TYPEORM_HOST: "w11k"
+#           TYPEORM_CONNECTION: postgres
+#           TYPEORM_PORT: 5432
+#           TYPEORM_SYNCHRONIZE: "false"
+#           TYPEORM_LOGGING: "true"
+#           TYPEORM_ENTITIES: dist/**/*.entity.js
+#           TYPEORM_MIGRATIONS: dist/migration/**/*.js
