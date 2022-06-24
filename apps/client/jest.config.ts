@@ -1,0 +1,24 @@
+/* eslint-disable */
+const esModules = ['@angular', '@ngrx'];
+
+export default {
+    displayName: 'client',
+    preset: '../../jest.preset.js',
+    setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+    globals: {
+        'ts-jest': {
+            tsconfig: '<rootDir>/tsconfig.spec.json',
+            stringifyContentPathRegex: '\\.(html|svg)$',
+        },
+    },
+    coverageDirectory: '../../coverage/apps/client',
+    snapshotSerializers: [
+        'jest-preset-angular/build/serializers/no-ng-attributes',
+        'jest-preset-angular/build/serializers/ng-snapshot',
+        'jest-preset-angular/build/serializers/html-comment',
+    ],
+    transform: { '^.+\\.(ts|js|mjs|html)$': 'jest-preset-angular' },
+
+    // https://stackoverflow.com/a/70615775
+    transformIgnorePatterns: [`<rootDir>/node_modules/(?!.*\\.mjs$|${esModules.join('|')})`],
+};

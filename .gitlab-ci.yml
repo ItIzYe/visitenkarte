@@ -1,0 +1,189 @@
+image: trion/ng-cli-karma:12.0.3
+
+variables:
+    FRONTEND_DOCKER_IMAGE_NAME: w11k-devs/intern/w11k-angular-nest-starter/client
+    FRONTEND_CONTAINER_TEST_IMAGE: $CI_REGISTRY/$FRONTEND_DOCKER_IMAGE_NAME:$CI_COMMIT_REF_SLUG
+    FRONTEND_CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/$FRONTEND_DOCKER_IMAGE_NAME:latest
+
+    BACKEND_DOCKER_IMAGE_NAME: w11k-devs/intern/w11k-angular-nest-starter/backend
+    BACKEND_CONTAINER_TEST_IMAGE: $CI_REGISTRY/$BACKEND_DOCKER_IMAGE_NAME:$CI_COMMIT_REF_SLUG
+    BACKEND_CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/$BACKEND_DOCKER_IMAGE_NAME:latest
+
+cache:
+    untracked: true
+    key: "$CI_BUILD_REF_NAME"
+    paths:
+        - node_modules/
+
+.base:
+    tags:
+        - linux
+        - docker
+
+stages:
+    - build
+    - test
+    - package
+    - release
+    - deploy
+
+# --------------- Frontend ---------------------
+
+build-frontend:
+    stage: build
+    extends:
+        - .base
+    script:
+        - CYPRESS_INSTALL_BINARY=0 npm ci
+        - npm run postinstall
+        - npm run lint:client
+        - npm run build:client
+    artifacts:
+        paths:
+            - dist/apps/client/
+
+package-frontend:
+    stage: package
+    extends:
+        - .base
+    image: docker:stable-git
+    services:
+        - docker:stable-dind
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker build -f nginx.Dockerfile -t $FRONTEND_CONTAINER_TEST_IMAGE .
+        - docker push $FRONTEND_CONTAINER_TEST_IMAGE
+
+test-frontend:
+    stage: test
+    extends:
+        - .base
+    script:
+        - CYPRESS_INSTALL_BINARY=0 npm ci
+#       - npm run postinstall
+        - npm run test:client:coverage
+    coverage: '/Lines.*?(\d+(?:\.\d+)?)%/'
+    artifacts:
+        paths:
+            - coverage/apps/client
+
+release-frontend-image:
+    stage: release
+    variables:
+        # we do not need the source code here. Just playing with Docker.
+        GIT_STRATEGY: none
+    extends:
+        - .base
+    image: docker:stable-git
+    services:
+        - docker:stable-dind
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker pull $FRONTEND_CONTAINER_TEST_IMAGE
+        - docker tag $FRONTEND_CONTAINER_TEST_IMAGE $FRONTEND_CONTAINER_RELEASE_IMAGE
+        - docker push $FRONTEND_CONTAINER_RELEASE_IMAGE
+    only:
+        refs:
+            - master
+
+# --------------- Backend ---------------------
+
+build-backend:
+    stage: build
+    extends:
+        - .base
+    script:
+        - CYPRESS_INSTALL_BINARY=0 npm ci
+        - npm run create-entities-index
+        - npm run create-migrations-index
+        - npm run lint:backend
+        - npm run build:backend
+    artifacts:
+        paths:
+            - dist/apps/backend/
+
+package-backend:
+    stage: package
+    extends:
+        - .base
+    image: docker:stable-git
+    services:
+        - docker:stable-dind
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker build -f backend.Dockerfile -t $BACKEND_CONTAINER_TEST_IMAGE .
+        - docker push $BACKEND_CONTAINER_TEST_IMAGE
+
+release-backend-image:
+    stage: release
+    variables:
+        # we do not need the source code here. Just playing with Docker.
+        GIT_STRATEGY: none
+    extends:
+        - .base
+    image: docker:stable-git
+    services:
+        - docker:stable-dind
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker pull $BACKEND_CONTAINER_TEST_IMAGE
+        - docker tag $BACKEND_CONTAINER_TEST_IMAGE $BACKEND_CONTAINER_RELEASE_IMAGE
+        - docker push $BACKEND_CONTAINER_RELEASE_IMAGE
+    only:
+        refs:
+            - master
+
+test backend:
+    extends:
+        - .base
+    stage: test
+    services:
+        - postgres:latest
+    script:
+        - CYPRESS_INSTALL_BINARY=0 npm ci
+#       - npm run postinstall
+        - npm run test:backend:coverage
+    coverage: '/Lines.*?(\d+(?:\.\d+)?)%/'
+    artifacts:
+        paths:
+            - coverage/apps/backend
+    variables:
+        POSTGRES_DB: cock
+        POSTGRES_USER: w11k
+        POSTGRES_PASSWORD: "w11k"
+#         TYPEORM_HOST: "postgres"
+#         TYPEORM_CONNECTION: postgres
+#         TYPEORM_USERNAME: cock
+#         TYPEORM_PASSWORD: cock
+#         TYPEORM_DATABASE: cock
+#         TYPEORM_PORT: 5432
+#         TYPEORM_SYNCHRONIZE: "false"
+#         TYPEORM_LOGGING: "true"
+#         TYPEORM_ENTITIES: src/**/*.entity.ts
+#         TYPEORM_MIGRATIONS: src/migration/**/*.ts
+
+# --------------- Deployment ---------------------
+
+# if needed: deploy to w11k-dev.de or titanic
+
+#deploy-frontend:
+#  stage: deploy
+#  script:
+#    - curl -X POST http://titanic:9090/api/webhooks/8d01d78e-3589-4b37-93ca-20d6dfb1d760
+#  tags:
+#    - linux
+#    - shell
+#  only:
+#    - master
+#    - develop
+
+#deploy-backend:
+#  stage: deploy
+#  script:
+#    - curl -X POST http://titanic:9090/api/webhooks/3743b915-8f46-45c6-af57-7ab5a83c2e68
+#  tags:
+#    - linux
+#    - shell
+#  only:
+#    - master
+#    - develop
